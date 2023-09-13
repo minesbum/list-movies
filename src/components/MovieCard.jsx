@@ -1,11 +1,20 @@
 export const MovieCard = (props) => {
+    const { name, onFavouriteClick, isFavourite } = props;
 
-    const {name} = props;
+
+
+    const handleClick = () => {
+        onFavouriteClick(name);
+    };
+
+
     return(
         <li>
             <article>
                 <h3>{name}</h3>
-                <button>Check times</button>
+                <label> 
+                <button onClick={handleClick}> {isFavourite ? "❤︎" : "♡" } </button>
+                </label>
             </article>
         </li>
     )
