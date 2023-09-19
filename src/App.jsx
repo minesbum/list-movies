@@ -10,8 +10,6 @@ const latestMovies =[
 
 
 function App() {
-
-
   return (
     <>
     <div>

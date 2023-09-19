@@ -1,49 +1,49 @@
 import { useEffect, useState } from "react";
-import { MovieCard } from "./MovieCard"
+import { MovieCard } from "./MovieCard";
 
-export const MovieList = (props) =>{
-    const { list } = props;
-    const [favourites, setFavourites] = useState([]);
+export const MovieList = (props) => {
+  const { list } = props;
+  const [favourites, setFavourites] = useState([]);
 
-    const handleFavouriteClick = (movieName) => {
-        console.log(`favourite clicker from ${movieName}`);
+  const handleFavouriteClick = (movieName) => {
+    console.log(`favourite clicked from ${movieName}`);
 
-        let newFavourites = [...favourites];
-    
+    let newFavourites = [...favourites];
 
-        if (!favourites.includes(movieName)){
-        newFavourites = [...newFavourites, movieName]
-         }else{
-        newFavourites = newFavourites.filter((movie) => movieName != movie);
-        }
+    if (!favourites.includes(movieName)) {
+      newFavourites = [...newFavourites, movieName];
+    } else {
+      newFavourites = newFavourites.filter((movie) => movieName != movie);
+    }
 
-        setFavourites(newFavourites);
+    setFavourites(newFavourites);
 
+    localStorage.setItem("favourites", JSON.stringify(newFavourites));
+  };
 
-        localStorage.setItem("favourites", JSON.stringify(newFavourites));
-    };
-
-    useEffect(() => {
-        const localStorageData = localStorage.getItem("favourites");
+  useEffect(() => {
+    const localStorageData = localStorage.getItem("favourites");
+    if(localStorageData){
+      try{
         const storedFavourites = JSON.parse(localStorageData);
 
         setFavourites(storedFavourites);
-    }, []);
+      }catch(err){
+        console.err("Error parsing favourite items from localStorage")
+      }
+    }
+  }, []);
 
-    console.log({ favourites });
-
-
-    return(
-        <ul>
-            {list.map((movie) => (
-            <MovieCard
-            key={movie.name}
-            name={movie.name}
-            onFavouriteClick={handleFavouriteClick}
-            isFavourite={favourites.includes(movie.name)}
-            />
-            ))}
-        </ul>
-    )
-}
-
+  return (
+    <ul>
+      {list.map((movie) => (
+        <MovieCard
+          key={movie.name}
+          name={movie.name}
+          onFavouriteClick={handleFavouriteClick}
+          isFavourite={favourites.includes(movie.name)}
+        />
+      ))}
+    </ul>
+  );
+};
