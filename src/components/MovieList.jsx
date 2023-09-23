@@ -1,38 +1,14 @@
-import { useEffect, useState } from "react";
 import { MovieCard } from "./MovieCard";
+import { useFavourites } from "../hooks/useFavourites";
 
 export const MovieList = (props) => {
   const { list } = props;
-  const [favourites, setFavourites] = useState([]);
+  const [favourites, addFavourite] = useFavourites();
 
-  const handleFavouriteClick = (movieName) => {
-    console.log(`favourite clicked from ${movieName}`);
+  function handleFavouriteClick(movieName) {
+    addFavourite(movieName)
+  }
 
-    let newFavourites = [...favourites];
-
-    if (!favourites.includes(movieName)) {
-      newFavourites = [...newFavourites, movieName];
-    } else {
-      newFavourites = newFavourites.filter((movie) => movieName != movie);
-    }
-
-    setFavourites(newFavourites);
-
-    localStorage.setItem("favourites", JSON.stringify(newFavourites));
-  };
-
-  useEffect(() => {
-    const localStorageData = localStorage.getItem("favourites");
-    if(localStorageData){
-      try{
-        const storedFavourites = JSON.parse(localStorageData);
-
-        setFavourites(storedFavourites);
-      }catch(err){
-        console.err("Error parsing favourite items from localStorage")
-      }
-    }
-  }, []);
 
   return (
     <ul>
